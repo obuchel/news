@@ -1,0 +1,66 @@
+import spacy
+import html as ihtml
+from bs4 import BeautifulSoup
+from scispacy.abbreviation import AbbreviationDetector
+import csv
+
+
+def replace_acronyms(text):
+    doc = nlp(text)
+    altered_tok = [tok.text for tok in doc]
+    for abrv in doc._.abbreviations:
+        altered_tok[abrv.start] = str(abrv._.long_form)
+    return(" ".join(altered_tok))
+
+all=[]
+names=["Board of Trustees","The Washington Post","COVID","COVID-19","COVID-19 outbreak","USA Today","Washington Post",'New York Times','COVID 19',"DUE",'Recovery','Active , School','PROBATIONARY PE Furman University','Cuomo Deploys SWAT Team','outbreaks','ABC News','Influenza','Congress','Dashboard','Outbreaks','Eyewitness News','Coronavirus' ]
+nlp = spacy.load("en_core_web_sm")
+abbreviation_pipe = AbbreviationDetector(nlp)
+nlp.add_pipe(abbreviation_pipe)
+with open('bing_file_10.csv') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    for row in csv_reader:
+        dd=replace_acronyms(BeautifulSoup(row[0]).get_text())
+        doc = nlp(dd)
+        dd1=replace_acronyms(BeautifulSoup(row[1]).get_text())
+        doc1 = nlp(dd1)
+        print(doc._.abbreviations,doc1._.abbreviations)
+        arr1=[(ent.text, ent.label_) for ent in doc.ents]
+        arr2=[(ent.text, ent.label_) for ent in doc1.ents]
+        arr3=arr1+arr2
+        arr0=[]
+        for el in arr3:
+            if el[1]=="ORG":
+                nname=el[0].replace("the ","").replace("The ","").replace(" /","")
+                if nname not in names:
+                    if nname not in arr0:
+                        arr0.append(nname)
+                    if nname not in all:
+                        all.append(nname)
+        print(arr0)
+print(all)        
+
+
+
+'''
+https://docs.microsoft.com/en-us/azure/cognitive-services/bing-web-search/paging-search-results
+
+
+
+
+Pritzker - chicago
+['Grand Valley State University', 'Boston College', 'University of Washington', 'UA', 'University of Arizona', 'University of Washington', 'UW', 'Bradley University', 'Arizona State University', 'University of Iowa', 'Temple University', 'GI', 'Pritzker', 'CE Primary School', 'Coronavirus', 'Chatham High School', 'Michigan Department of Health and Human Services', 'University of Illinois Urbana - Champaign', 'University of Alabama', 'University of California , San Francisco', 'University of Arizona', 'University of Mississippi', 'WACO', 'KXAN', 'Baylor University', 'University of Michigan', 'University of Michigan Medical School', 'UConn', 'Central Michigan University', 'Temple', "Temple University", 'CHOP', 'James Madison University', 'Temple University Moving To Online Learning', 'CBS', "Children 's Hospital of Philadelphia", 'UD', 'University of Dayton', 'Reynolds', 'SUNY', 'KSU', 'Health Department', 'Kansas State University', 'University of Notre Dame', 'Cameron Peak', 'School', 'University of Queensland ’s Alliance for Environmental Health Sciences', 'COLUMBIA', 'University of South Carolina', 'Blackbaud Inc.', 'University of New Mexico', 'Furman University', 'University of Wyoming', 'Broadmoor Hotel', 'Colorado Department of Public Health and Environment', 'Bear Creek Elementary School', 'K', 'Blue Valley High School', 'UNIZIK Business School', 'Nnamdi Azikiwe University Business School', 'Utah State University', 'Johns Hopkins University', 'Furman', 'Kappa Alpha Order', 'Columbia University ’s Brown Institute', 'University of North Carolina', 'Chapel Hill', 'New London', 'Yale University', 'NHS', 'Oxford University', 'BC','Bloomsburg University', 'Cherry Creek High School', 'University of Tennessee', 'Central Dauphin School District', 'Department of Corrections']
+
+
+
+
+
+
+["Western University 's", 'Western University', 'Grand Valley State University', 'Cherry Creek High School', 'Boston College', 'Outbreaks Threaten University Reopenings', 'Middlesex - London Health Unit', 'Bradley University', 'Alma', 'University of Washington', 'Arizona State University', 'Stage Goals', 'JACKSON CENTER', 'PA ACCESSWIRE September 17 , 2020', 'Some Temple University Students Move Out Of Dorm Rooms After', 'Temple University', 'GI', 'University of Washington Seeks Repayment for Students ’ Tuition and Other Expenses', 'UW', 'Pritzker', 'White House', 'Chatham High School', 'University of Mississippi', 'University of Arizona Stops', 'University of Arizona', 'University of California , San Francisco', 'University of Michigan', 'University of Michigan Medical School', 'UConn', 'University of North Carolina', 'Chapel Hill', 'Indiana University', 'Temple', "Temple University 's", 'CHOP', 'Temple University Moving To Online Learning', 'CBS', 'Emporia State University', 'WACO', 'KXAN', 'Baylor University', 'Johns Hopkins University', 'California & Florida', 'School & University', 'PolicyLab', "Children 's Hospital of Philadelphia", 'UD', 'University of Dayton', 'SUNY', 'Temple University Suspends Most In - Person Classes for Fall Semester After Coronavirus Outbreak', 'University of Iowa', 'James Madison University', 'University of Alabama', 'Reynolds', 'Furman University', 'Cameron Peak', 'Notre Dame University', 'Twitter', 'COLUMBIA', 'University of South Carolina', 'University of New Mexico', 'Blackbaud Inc.', 'School', 'University of Queensland ’s Alliance for Environmental Health Sciences', 'University of Wyoming', 'Broadmoor Hotel', 'Colorado Department of Public Health and Environment', 'Bear Creek Elementary School', 'K', 'Kansas State University', 'Blue Valley High School', 'UNIZIK Business School', 'Nnamdi Azikiwe University Business School', 'Star by', 'Columbia University ’s Brown Institute', 'Utah State University', 'Holy Family University', 'Northeast Philly', 'Philly Catholic League', 'Philadelphia Health Department', 'NEA', 'San Diego State University', "University of Pennsylvania 's", 'Perelman School of Medicine', 'n’t', 'SALT LAKE CITY', 'Utah State', 'LBJ School of Public Affairs', 'University of Texas', 'Circle of Blue', 'Covid-19 Live Updates', 'School Workers', 'N.J. university', 'Breaking College', 'Operation Outbreak', 'Sununu', 'Vaccine Is Approved', 'University of Colorado', 'Salvation Army', 'Ball State University', 'UNE', 'CDC', 'Centers for Disease Control and Prevention', 'Trump', '| Raleigh News & Observer', 'Middlesex-London Health Unit', 'CDPHE', 'University of Northern', 'Cuomo Issues Outbreak Guidance for Colleges Holding In - Person Classes', 'University of Missouri', 'L.A. County Department of Public Health', 'Boston College Pauses Swimming & Diving Practices', "Boston Globe 's", 'THE UNIVERSITY OF MISSISSIPPI SAYS THEY', 'School of Applied Sciences', 'Briar Cliff', 'USD', 'Northeast Ohio Medical University', 'Cornell University', 'Cornell', 'TEMPLE UNIVERSITY', 'SDSU', 'UA', 'PHOENIX', 'Columbia University ’s Brown Institute for Media Innovation', 'Department of Health Policy', 'University School of Medicine', 'NYC', 'Coronavirus Wisconsin :', 'Lancet', 'Furman', 'Kappa Alpha Order', 'New London', 'Yale University']
+
+
+
+['University of Alabama', 'Emporia State University', 'Temple University', 'Utah State University', 'University of South Carolina', 'Notre Dame University', 'UD', 'University of Dayton', 'Johns Hopkins University', 'SUNY', 'NYC', 'Reynolds', 'WACO', 'KXAN', 'Baylor University', 'Temple University Suspends Most In - Person Classes for Fall Semester After Coronavirus Outbreak', 'University of Iowa', 'James Madison University', 'Furman University', 'California & Florida', 'School & University', 'PolicyLab', 'CHOP', 'COLUMBIA', 'Philadelphia Health Department', 'Indiana University', 'Cameron Peak', 'Holy Family University', 'Northeast Philly', 'Philly Catholic League', 'University of New Mexico', 'Twitter', 'University of Arizona', 'Blackbaud Inc.', "University of Pennsylvania 's", 'Perelman School of Medicine', 'University of Wyoming', 'Kansas State University', 'Blue Valley High School', 'Broadmoor Hotel', 'Colorado Department of Public Health and Environment', 'Bear Creek Elementary School', 'K', 'Mailman School of Public Health', 'Columbia University', 'Star by', 'Columbia University ’s Brown Institute', 'N.J. university', 'Herzliah High School', 'Breaking College', 'USPS', 'Colorado State University', 'University of Colorado', 'Salvation Army', 'Health Department', 'Science', 'Boston University ’s School of Public Health', 'Blog Analysis & Opinion News Live Blog Cafe', 'Muckraker scandal & investigations', 'UNE', 'World Health Organization', 'CDPHE', 'University of Northern', "University of Iowa 's", 'University of Mississippi', 'Cuomo Issues Outbreak Guidance for Colleges Holding In - Person Classes', 'Ball State University', 'THE UNIVERSITY OF MISSISSIPPI SAYS THEY', 'School of Applied Sciences', 'Northeast Ohio Medical University', 'Cornell University', 'Cornell', 'TEMPLE UNIVERSITY', 'SDSU', 'San Diego State University', 'UA', 'PHOENIX', 'CBS', 'University of Alabama at Birmingham Division of Infectious Diseases', 'Medicine and School of Medicine', 'Olympia High School', 'University of Michigan', "Children 's Hospital of Philadelphia", 'Temple University Suspends In - Person Classes', 'Sacred Heart University', 'SALT LAKE CITY', 'Utah State', 'Department of Health Policy', 'University School of Medicine', 'Kansas Department of Health and Environment', 'School', 'University of Queensland ’s Alliance for Environmental Health Sciences', 'UNIZIK Business School', 'Nnamdi Azikiwe University Business School', 'LBJ School of Public Affairs', 'University of Texas', 'Circle of Blue', 'Briar Cliff', 'USD', 'Ohio Department of Health', 'ODH', 'NEA', 'n’t', 'University', 'University of North Carolina', 'Some Temple University Students Move Out Of Dorm Rooms After', 'UNHtogether', 'Boston College Pauses Swimming & Diving Practices', 'Boston College', "Boston Globe 's", 'NBC15 Investigates', 'UW Madison', 'NBC15′s', 'National Academies of Sciences', 'Q&A', 'Binghamton University', 'Furman', 'Kappa Alpha Order', 'New London', 'Yale University', 'Michigan State', "Temple University 's", 'Philadelphia Health', 'University of Pennsylvania', 'Elon University', 'California Department of Public Health', 'University of California at San Francisco School of Medicine', 'District Health Unit', 'Temple University Moving To Online Learning', 'Temple', 'Fellowes High School', 'Attleboro High School', 'Kansas City Independent School Deploys Black & Veatch ’s', 'Rapid Modular Health System Unit', 'Combat', 'Barstow School', 'Black & Veatch ’s', 'Rapid Modular Health System']
+
+
+'''

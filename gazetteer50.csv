@@ -1,0 +1,52 @@
+,id,name,state,address,lat,lng
+0,0,University of Glasgow,UK,"Glasgow G12 8QQ, United Kingdom",55.869829854,-4.28583219
+1,1,Washington State University,WA,"Pullman, WA, United States",46.73015,-117.18147
+2,2,University of California San Diego,CA,"9500 Gilman Dr. La Jolla, CA 92093",32.87693,-117.23654
+3,3,Case Western Reserve,OH,"10900 Euclid Ave, Cleveland, OH 44106, United States",41.5059,-81.60905
+4,4,Marquette University,WI,"1250 W Wisconsin Ave, Milwaukee, WI 53233, United States",43.03884,-87.92815
+5,5,Salisbury University,MD,"1101 Camden Ave, Salisbury, MD 21801, United States",38.34834,-75.60773
+6,6,University of Maryland Eastern Shore,MD,"11868 College Backbone Rd, Princess Anne, MD 21853, United States",38.20621,-75.68639
+7,8,Regis University,CO,"3333 Regis Blvd, Denver, CO 80221, United States",39.78979,-105.03117
+8,9,University of Minnesota,MN,"Minneapolis, MN 55455, United States",44.97659,-93.23126
+9,10,University of Delaware,DE,"Newark, DE 19716, United States",39.67819,-75.76162
+10,11,Ohio State University,OH,"281 W Lane Ave, Columbus, OH 43210, United States",40.0057,-83.01644
+11,12,St John University,NY,"8000 Utopia Pkwy, Jamaica, NY 11439, United States",40.72297,-73.79036
+12,13,Arizona State University,AR,"Phoenix, AZ 85004, United States",33.44825,-112.0758
+13,14,James Madison University,VA,"800 S Main St, Harrisonburg, VA 22807, United States",38.441,-78.87429
+14,15,Princeton University,NJ,"Princeton, NJ 08544, United States",40.34351,-74.65598
+15,16,Bradley University,IL,"1501 W Bradley Ave, Peoria, IL 61625, United States",40.69651,-89.61664
+16,17,Simon Fraser University,BC,"8888 University Dr, Burnaby, BC V5A 1S6",49.28006,-122.90454
+17,18,State University of New York Albany,NY,"1400 Washington Ave, Albany, NY 12222, United States",42.68984,-73.8241
+18,19,University of New Hampshire,NH,"105 Main St, Durham, NH 03824, United States",43.13716,-70.93294
+19,20,University of Memphis,TN,"3720 Alumni Ave, Memphis, TN 38152, United States",35.11858,-89.93966
+20,21,Colorado State University,CO,"2545 Research Blvd, Fort Collins, CO 80526, United States",40.55325,-105.08647
+21,22,University of Georgia,GA,"Athens, GA 30602, United States",33.95043,-83.37451
+22,23,Huazhong Agricultural University,"Wuhan, China","Xueyuan Rd, Hongshan, Wuhan, Hubei, China",30.58333,114.26667
+23,24,Virginia Tech,VA,"Blacksburg, VA 24061, United States",37.22993,-80.41809
+24,25,University of Illinois,IL,"Champaign, IL, United States",40.1142,-88.2435
+25,26,University of Miami,FL,"1320 S Dixie Hwy, Coral Gables, FL 33146, United States",25.71338,-80.27729
+26,27,UW-Madison,WI,"Madison, WI, United States",43.07313,-89.38644
+27,28,University of Lynchburg,VA,"1501 Lakeside Dr, Lynchburg, VA 24501, United States",37.40153,-79.18309
+28,29,University of Kansas,KS,"1450 Jayhawk Blvd, Lawrence, KS 66045, United States",38.95857,-95.24767
+29,30,Adams State University,CO,"208 Edgemont Blvd, Alamosa, CO 81101, United States",37.47058,-105.8804
+30,31,Colorado College,CO,"14 E, W Cache La Poudre St, Colorado Springs, CO 80903, United States",38.84676,-104.82536
+31,32,State University of New York,NY,"280 Central Ave, Fredonia, NY 14063, United States",42.45365,-79.33477
+32,33,North Carolina State University,NC,"Raleigh, NC 27695, United States",35.78547,-78.6427
+33,34,Western Michigan University,MI,"1903 Western, Michigan Ave, Kalamazoo, MI 49008, United States",42.28465,-85.61033
+34,35,California State University Los Angeles,CA,"5151 State University Dr, Los Angeles, CA 90032, United States",34.06236,-118.17182
+35,36,University of Arizona Tuscon,AR,"Tucson, AZ 85721, United States",32.22177,-110.96977
+36,37,Manchester Metropolitan University,UK,"All Saints Building, All Saints, Manchester M15 6BH, United Kingdom",53.47053,-2.23872
+37,38,Oxford University,UK,"Oxford OX1 2JD, United Kingdom",51.75629,-1.25951
+38,39,Colorado State University Fort Collins,CO,"2545 Research Blvd, Fort Collins, CO 80526, United States",40.55325,-105.08647
+39,40,South Florida University,FL,"4202 E Fowler Ave, Tampa, FL 33620, United States",28.05471,-82.413
+40,41,Hofstra University,NY,"1000 Hempstead Turnpike, Hempstead, NY 11549, United States",40.70771,-73.67699
+41,42,Rutgers University,NJ,"New Brunswick, NJ, United States",40.49477,-74.44384
+42,43,University of Houston,TX,"4800 Calhoun Rd, Houston, TX 77004, United States",29.7187,-95.33775
+43,44,University at Buffalo,NY,"Buffalo, NY 14260, United States",42.88544,-78.87846
+44,45,Colgate University,NY,"13 Oak Dr, Hamilton, NY 13346, United States",42.81967,-75.53585
+45,46,Thomas Jefferson University,PA,"901 Walnut St, Philadelphia, PA 19107, United States",39.94855,-75.15594
+46,47,University of Tennessee,TN,"Knoxville, TN 37996, United States",35.96068,-83.92103
+47,48,Appalachian State University,NC,"287 Rivers St, Boone, NC 28608, United States",36.21116,-81.67746
+48,49,University of Oxford,UK,"Oxford OX1 2JD, United Kingdom",51.75629,-1.25951
+49,51,Colorado State University Denver,CO,"475 17th St #1400, Denver, CO 80202, United States",39.74464,-104.98871
+50,52,University of Missouri St.Louis,MS,"1 University Blvd, St. Louis, MO 63121, United States",38.71013,-90.31238

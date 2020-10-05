@@ -1,0 +1,73 @@
+import json
+import numpy as np
+import pandas as pd
+data0=pd.read_csv('saved_final_data.csv')
+ll=list(data0["url"].unique())
+ll2=data0[["title","url","desciption","date"]]
+frame=[]
+for elem in range(0,287):
+    
+    with open("json_final_"+str(elem)+".json","r") as fp:
+        data=json.load(fp)
+        #print(data["objects"][0]["text"])
+        
+        try:
+            #print(item["tags"])
+            llk=[]            
+            llk.append(data['request']['pageUrl'])
+            for item in data["objects"]:
+                sentiments=[]
+                try:
+                    for el in item["tags"]:
+                        sentiments.append(el["sentiment"])
+                    llk.append(np.sum(sentiments))
+                except:
+                    llk.append(00)
+                    continue
+                try:
+                    llk.append(item["title"])
+                except:
+                    llk.append("")
+                    continue
+                try:
+                    llk.append(item["text"])
+                except:
+                    llk.append("")
+                    continue
+            frame.append(llk)
+        except:
+            try:
+                llk=[]
+                llk.append(ll[elem])
+                dd=ll2[ll2["url"]==ll[elem]]
+                llk.append(00)
+                ind=0
+                for ele in dd.iterrows():
+                    if ind==0:
+                        llk.append(ele[1]["title"])
+                        llk.append(ele[1]["desciption"])
+                    ind+=1    
+                    #print(ele[1]["title"],ele[1]["desciption"])
+                #print(data)
+                frame.append(llk)
+            except:
+                llk9=[]
+                llk9.append(ll[elem])
+                dd=ll2[ll2["url"]==ll[elem]]
+                llk9.append(00)
+                ind=0
+                for ele in dd.iterrows():
+                    if ind==0:
+                        llk9.append(ele[1]["title"])
+                        llk9.append(ele[1]["desciption"])
+                    ind+=1    
+                print(llk9)
+                #frame.append(llk9)
+                continue
+            continue
+        #llk.append("date")
+        #frame.append(llk)    
+#dict_keys(['date', 'sentiment', 'images', 'author', 'estimatedDate', 'publisherRegion', 'icon', 'diffbotUri', 'siteName', 'type', 'title', 'tags', 'publisherCountry', 'humanLanguage', 'pageUrl', 'html', 'text'])
+#print(len(pd.read_csv('saved_final_data.csv')["url"].unique()))
+final_data=pd.DataFrame(frame,columns=["url","sentiments","title","description"])
+print(final_data.to_csv("urls_with_full_texts_sentiments.csv"))

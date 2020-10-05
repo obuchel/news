@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Style circles with a data-driven property</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 63%; height:40rem;}
+
+  #accordion-resizer {
+    padding: 10px;
+    width: 35%;
+    max-height: 620px;
+    overflow:auto;
+    /*position: absolute;
+    left:40rem;*/
+    float:right;
+    
+  }
+
+</style>
+
+</head>
+<body>
+    <div id="title"></div>
+  <div id="map"></div>
+  <div id="accordion-resizer" class="ui-widget-content">
+    <div id="accordion"></div>
+    </div>
+  <script>
+
+    
+  var popup;
+  var hoverStateId;
+	mapboxgl.accessToken = 'pk.eyJ1Ijoib2J1Y2hlbCIsImEiOiJmOWQ2MzQxNmE0M2Y3YmVjNzA2NmM2MGQzYTIwYmQ3OCJ9.psxJSN8q9n2-HfFGoIUNJA';
+var map = new mapboxgl.Map({
+container: 'map',
+style: 'mapbox://styles/mapbox/light-v10',
+zoom: 3,
+center: [-92.447303, 37.753574]
+});
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');      
+  map.addControl(new mapboxgl.FullscreenControl(), 'bottom-left');
+
+  fetch("universities_geojson.json").then(res => res.json()) 
+    .then(data => {
+	var tex="";
+	for (var i=0; i<data["features"].length; i++) {
+	    var tt=data["features"][i]["properties"]["name"].split("; ");
+	    for (var z=0; z<tt.length; z++) {
+		tex +="<h3 id='"+tt[z]+"'>"+tt[z]+"</h3><div>";
+            var ttu=data["features"][i]["properties"]["descriptions"].split("|");		
+		for (var u=0; u<ttu.length; u++) {
+		    //console.log(ttu[u]);
+		if (ttu[u].length>5) {
+		    tex +="<p><span style='color:red'>"+ttu[u].split(" _ ")[0]+"</span><br>"+ttu[u].split(" _ ")[1]+"<br><b>Date:</b> "+ttu[u].split(" _ ")[4]+" <br><b>Published by:</b> <i style='color:red'>"+ttu[u].split(" _ ")[3]+"</i> <a target='_blank' href='"+ttu[u].split(" _ ")[2]+"'>link</a></p>";
+		}
+	    }
+		tex +="</div>";
+
+            }		
+	}
+	//console.log(tex);
+	$("#accordion").append(tex);
+//$( "#accordion" ).accordion();
+/*    $( "#accordion" ).accordion({
+	heightStyle: "content",
+	collapsible: true
+    });
+
+*/
+
+var accordion = $("#accordion");
+
+    // Get an array of jQuery objects containing each h3 and the div that
+    // follows it
+    var entries = $.map(accordion.children("h3").get(), function(entry) {
+        var $entry = $(entry);
+        return $entry.add($entry.next());
+    });
+
+    // Sort the array by the h3's text
+    entries.sort(function(a, b) {
+        return a.filter("h3").text().localeCompare(b.filter("h3").text());
+    });
+
+    // Put them in the right order in the container
+    $.each(entries, function() {
+        this.detach().appendTo(accordion);
+    });
+
+
+    accordion
+        .accordion({
+            header: "> h3",
+            autoHeight: false,
+	    heightStyle: "content",
+            collapsible: true,
+            //active: false,
+	    active: 0,
+            animate: 300,
+ activate: function (event, ui) {
+
+                        try
+                        {
+                            var self = this;
+                            theOffset = $(self).offset();
+                            $('body,html').animate({ scrollTop: theOffset.top - 100 });
+                        } catch (e) {
+                            alert(e);
+                        }
+                    }
+
+	    // collapse will take 300ms
+	    /*activate: function( event, ui ) {
+        if(!$.isEmptyObject(ui.newHeader.offset())) {
+            $('html:not(:animated), body:not(:animated)').animate({ scrollTop: ui.newHeader.offset().top }, 'slow');
+        }
+    }*/
+        })
+        .sortable({
+            axis: "y",
+            handle: "h3",
+            sorting: true,
+            stop: function() {
+                stop = true;
+            }
+        });
+/*
+$('#accordion h3').bind('click',function(){
+        var self = this;
+        setTimeout(function() {
+            theOffset = $(self).offset();
+            $('body,html').animate({ scrollTop: theOffset.top + 100 });
+        }, 310); // ensure the collapse animation is done
+    });
+*/
+	
+ /*
+    $( "#accordion-resizer" ).resizable({
+      minHeight: 140,
+      minWidth: 200,
+      resize: function() {
+        $( "#accordion" ).accordion( "refresh" );
+      }
+    });
+*/
+map.on('load', function () {
+map.addSource('ethnicity', {
+type: 'geojson',
+data: data
+});
+map.addLayer({
+'id': 'population',
+'type': 'circle',
+'source': 'ethnicity',
+//'source-layer': 'sf2010',
+'paint': {
+'circle-radius': ['get', 'weight'],
+    'circle-color':'red',
+'circle-stroke-color': '#000000',
+'circle-stroke-width': 0.5,
+'circle-opacity': 0.3
+
+}
+});
+
+    map.on('click', 'population', function(e) {
+	//console.log(e.features[0].geometry);
+
+	$( "h3" ).each(function( index ) {
+	    if ($(this).text()==e.features[0].properties.name){
+    //console.log( index+" " +$(this).text() );
+		$('#accordion').accordion("option", "active", index);
+		document.getElementById($(this).text()).scrollIntoView();
+/*
+		$("#"+$(this).text()).animate({
+        scrollTop: $("#title").offset().top
+	}, 20);
+
+		$('#accordion').bind('accordionactivate', function(event, ui) {
+  /* In here, ui.newHeader = the newly active header as a jQ object
+              ui.newContent = the newly active content area */
+  /*$( ui.newHeader ).ScrollTo(); // or ui.newContent, if you prefer
+   });*/
+
+	    }
+});
+
+
+	
+//	$('#accordion').accordion("option", "active", 10);
+    if (typeof popup=="object") popup.remove();
+// hoveredStateId = null;
+    var coordinates = e.features[0].geometry.coordinates.slice();
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+}
+     var htm=e.features[0].properties.name;   
+  //  hoveredStateId = e.features[0].properties.name;    
+    var lats=e.lngLat;
+
+popup=new mapboxgl.Popup()
+.setLngLat(lats)
+.setHTML(htm)
+.addTo(map);
+  });
+
+});
+    
+});
+   $('document').ready(function(){
+ function isScrolledIntoView(elem)
+    {
+        var docViewTop = $(window).scrollTop();
+        var docViewBottom = docViewTop + $(window).height();
+
+        var elemTop = $(elem).offset().top;
+        var elemBottom = elemTop + $(elem).height();
+
+        return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+    }
+
+    $(".accordion-inner").bind("accordionchange", function(event, ui) {
+      if ($(ui.newHeader).offset() != null) {
+        if (!isScrolledIntoView(ui.newHeader))
+        {
+            ui.newHeader, // $ object, activated header
+            $("html, body").animate({scrollTop: ($(ui.newHeader).offset().top)-100}, 500);
+        }
+      }
+    });
+
+    
+   
+//$( "#accordion" ).accordion();
+
+});
+</script>
+  
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+--2020-09-16 21:07:01--  http://eventregistry.org/api/v1/event/getEventsForTopicPage?uri=23139dba-1eef-4adb-996c-4b7e85237aca
+Resolving eventregistry.org (eventregistry.org)... 185.49.3.50
+Connecting to eventregistry.org (eventregistry.org)|185.49.3.50|:80... connected.
+HTTP request sent, awaiting response... 401 Unauthorized
+
+Username/Password Authentication Failed.

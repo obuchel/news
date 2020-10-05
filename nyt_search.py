@@ -1,0 +1,14 @@
+from eventregistry import *
+import json
+import urllib.request
+import sys
+#er = EventRegistry(apiKey = "068bacd1-4c7e-42aa-9868-23bec0104ea8")
+
+url="https://api.nytimes.com/svc/search/v2/articlesearch.json?q=COVID%20schools&api-key=kADXYjvPzB2mEAqyCvJolsI2bQMQ3eJt"
+
+with urllib.request.urlopen(url) as f:
+    dd=f.read().decode('utf-8')
+    ff=json.loads(dd)
+    #dd=data.read().decode(data.headers.get_content_charset())
+    for elem in ff["response"]["docs"]:
+        print(elem["headline"]["main"])#,elem["lead_paragraph"])
